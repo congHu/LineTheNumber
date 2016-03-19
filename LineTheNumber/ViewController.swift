@@ -10,6 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    lazy var documentsPath: String = {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        return paths.first! as! String
+        }()
+    
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -20,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet var startButton: UIButton!
     @IBOutlet var blueAdjustTitle: UILabel!
     @IBOutlet var yellowAdjustTitle: UILabel!
+    @IBOutlet var showTutorSwitch: UISwitch!
     
     //全局参数
     var gaming = false
@@ -29,6 +35,18 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "animateTitle:", userInfo: nil, repeats: true)
+        
+        let setting = "\(documentsPath)/setting.plist"
+        println(setting)
+        if !NSFileManager.defaultManager().fileExistsAtPath(setting){
+            var sd = NSDictionary(dictionary: ["showTutor": true])
+            sd.writeToFile(setting, atomically: true)
+        }else{
+            var sd = NSDictionary(contentsOfFile: setting)!
+            showTutorSwitch.on = sd.objectForKey("showTutor") as! Bool
+        }
+        showTutorSwitch.layer.cornerRadius = 20
+        
     }
     
     func animateTitle(sender:NSTimer){
@@ -77,7 +95,13 @@ class ViewController: UIViewController {
     func gameClock(sender:NSTimer){
         
         var numPadView = storyboard?.instantiateViewControllerWithIdentifier("numPadView") as! UIViewController
-        presentViewController(numPadView, animated: true, completion: nil)
+        presentViewController(numPadView, animated: false, completion: nil)
+        
+    }
+    @IBAction func turnTutor(sender: UISwitch) {
+        var sd:NSDictionary = NSDictionary(dictionary: ["showTutor": sender.on])
+        let setting = "\(documentsPath)/setting.plist"
+        sd.writeToFile(setting, atomically: true)
         
     }
     

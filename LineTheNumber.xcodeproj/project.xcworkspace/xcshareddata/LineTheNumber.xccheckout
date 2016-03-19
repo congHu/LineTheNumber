@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>6C0E94E0-1D1C-4B1F-A229-D0742C0EEEBE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LineTheNumber</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0BDF537B40C63A862C0AA4DE1F3FC1E1745CC4EB</key>
+		<string>https://github.com/congHu/LineTheNumber.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>LineTheNumber.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0BDF537B40C63A862C0AA4DE1F3FC1E1745CC4EB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/congHu/LineTheNumber.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>0BDF537B40C63A862C0AA4DE1F3FC1E1745CC4EB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0BDF537B40C63A862C0AA4DE1F3FC1E1745CC4EB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LineTheNumber</string>
+		</dict>
+	</array>
+</dict>
+</plist>
