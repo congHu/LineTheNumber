@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 class ViewController2: UIViewController {
     lazy var documentsPath: String = {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
