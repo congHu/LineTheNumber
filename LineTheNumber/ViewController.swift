@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import AVFoundation
 class ViewController: UIViewController {
 
     lazy var documentsPath: String = {
@@ -26,6 +26,10 @@ class ViewController: UIViewController {
     @IBOutlet var blueAdjustTitle: UILabel!
     @IBOutlet var yellowAdjustTitle: UILabel!
     @IBOutlet var showTutorSwitch: UISwitch!
+    @IBOutlet var BGMSwitcher: UISwitch!
+    
+    var audioPlayer:AVAudioPlayer!
+    var playSFX:AVAudioPlayer!
     
     //全局参数
     var gaming = false
@@ -39,13 +43,31 @@ class ViewController: UIViewController {
         let setting = "\(documentsPath)/setting.plist"
         println(setting)
         if !NSFileManager.defaultManager().fileExistsAtPath(setting){
-            var sd = NSDictionary(dictionary: ["showTutor": true])
+            var sd = NSMutableDictionary()
+            sd.setValue(true, forKey: "showTutor")
+            sd.setValue(true, forKey: "BGM")
             sd.writeToFile(setting, atomically: true)
         }else{
             var sd = NSDictionary(contentsOfFile: setting)!
             showTutorSwitch.on = sd.objectForKey("showTutor") as! Bool
+            BGMSwitcher.on = sd.objectForKey("BGM") as! Bool
         }
-        showTutorSwitch.layer.cornerRadius = 20
+        showTutorSwitch.layer.cornerRadius = 19
+        BGMSwitcher.layer.cornerRadius = 19
+        
+        //音乐
+        audioPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BGM", ofType: "mp3")!), error: nil)
+        playSFX = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuSelect", ofType: "wav")!), error: nil)
+        
+        audioPlayer.numberOfLoops = -1
+        if(BGMSwitcher.on){
+            audioPlayer.volume = 0.4
+        }else{
+            audioPlayer.volume = 0
+            playSFX.volume = 0
+        }
+        
+        audioPlayer.play()
         
     }
     
@@ -70,7 +92,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func gameStart(sender: UIButton) {
-        
+        playSFX.play()
         self.gameMainTitle.center.x += 5
         self.blueAdjustTitle.alpha = 0.6
         self.yellowAdjustTitle.alpha = 0.6
@@ -94,15 +116,30 @@ class ViewController: UIViewController {
     
     func gameClock(sender:NSTimer){
         
-        var numPadView = storyboard?.instantiateViewControllerWithIdentifier("numPadView") as! UIViewController
+        var numPadView = storyboard?.instantiateViewControllerWithIdentifier("numPadView") as! ViewController2
+        numPadView.BGM = audioPlayer
         presentViewController(numPadView, animated: false, completion: nil)
         
     }
     @IBAction func turnTutor(sender: UISwitch) {
-        var sd:NSDictionary = NSDictionary(dictionary: ["showTutor": sender.on])
         let setting = "\(documentsPath)/setting.plist"
+        var sd:NSMutableDictionary = NSMutableDictionary(contentsOfFile: setting)!
+        sd.setValue(sender.on, forKey: "showTutor")
         sd.writeToFile(setting, atomically: true)
         
+    }
+    @IBAction func turnBGM(sender: UISwitch) {
+        let setting = "\(documentsPath)/setting.plist"
+        var sd:NSMutableDictionary = NSMutableDictionary(contentsOfFile: setting)!
+        sd.setValue(sender.on, forKey: "BGM")
+        sd.writeToFile(setting, atomically: true)
+        if sender.on{
+            audioPlayer.volume = 0.4
+            playSFX.volume = 1
+        }else{
+            audioPlayer.volume = 0
+            playSFX.volume = 0
+        }
     }
     
     override func didReceiveMemoryWarning() {

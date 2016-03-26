@@ -80,12 +80,29 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ECy-Kg-iWh">
+                                <rect key="frame" x="149" y="538" width="51" height="31"/>
+                                <color key="backgroundColor" red="0.69158773669999996" green="0.81474553999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.69158773669999996" green="0.81474553999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="onTintColor" red="0.69158773669999996" green="0.81474553999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="thumbTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="turnBGM:" destination="vXZ-lx-hvc" eventType="valueChanged" id="5Ur-u5-QYR"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="声音" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qIE-fu-ukL">
+                                <rect key="frame" x="206" y="542" width="35" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ydu-dx-5mI" firstAttribute="leading" secondItem="Mkg-Xj-yf0" secondAttribute="leadingMargin" id="0Jj-ir-Ts3"/>
                             <constraint firstAttribute="centerX" secondItem="1n8-gd-BM9" secondAttribute="centerX" constant="-0.5" id="3vE-lg-KNe"/>
                             <constraint firstAttribute="centerX" secondItem="Dk9-gE-K7r" secondAttribute="centerX" constant="-2" id="6Y0-Qv-88B"/>
+                            <constraint firstItem="ydu-dx-5mI" firstAttribute="top" secondItem="qIE-fu-ukL" secondAttribute="bottom" constant="14" id="CNr-Ug-8in"/>
                             <constraint firstItem="1n8-gd-BM9" firstAttribute="top" secondItem="Mkg-Xj-yf0" secondAttribute="top" constant="352" id="E48-9H-lQL"/>
                             <constraint firstItem="n09-Py-XeP" firstAttribute="top" secondItem="Mkg-Xj-yf0" secondAttribute="top" constant="166" id="Hbe-Rd-Vxn"/>
                             <constraint firstItem="AbR-m2-ucU" firstAttribute="leading" secondItem="bXo-Td-pAl" secondAttribute="trailing" constant="8" id="IGP-dk-BPJ"/>
@@ -94,14 +111,18 @@
                             <constraint firstItem="ydu-dx-5mI" firstAttribute="top" secondItem="AbR-m2-ucU" secondAttribute="bottom" constant="14" id="Q4u-Rp-xpC"/>
                             <constraint firstItem="RHM-VY-MJM" firstAttribute="top" secondItem="Mkg-Xj-yf0" secondAttribute="top" constant="164" id="Q96-cj-VIy"/>
                             <constraint firstAttribute="centerX" secondItem="eTb-nj-8T4" secondAttribute="centerX" constant="-2" id="Ts3-KM-W6h"/>
+                            <constraint firstItem="ydu-dx-5mI" firstAttribute="top" secondItem="ECy-Kg-iWh" secondAttribute="bottom" constant="8" id="V2R-hs-6bo"/>
                             <constraint firstAttribute="centerX" secondItem="RHM-VY-MJM" secondAttribute="centerX" constant="1" id="XMc-UB-Ga0"/>
+                            <constraint firstItem="qIE-fu-ukL" firstAttribute="leading" secondItem="ECy-Kg-iWh" secondAttribute="trailing" constant="8" id="YHh-Lt-SM9"/>
                             <constraint firstAttribute="centerX" secondItem="n09-Py-XeP" secondAttribute="centerX" id="j04-a8-LO6"/>
+                            <constraint firstItem="ECy-Kg-iWh" firstAttribute="leading" secondItem="AbR-m2-ucU" secondAttribute="trailing" constant="8" id="pSa-XX-rCA"/>
                             <constraint firstItem="ydu-dx-5mI" firstAttribute="top" secondItem="bXo-Td-pAl" secondAttribute="bottom" constant="8" id="qO4-WL-ZLs"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ydu-dx-5mI" secondAttribute="bottom" constant="8" id="vs6-Nt-6W5"/>
                             <constraint firstItem="bXo-Td-pAl" firstAttribute="leading" secondItem="Mkg-Xj-yf0" secondAttribute="leadingMargin" id="wVb-gp-8l8"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="BGMSwitcher" destination="ECy-Kg-iWh" id="IOW-CI-yeK"/>
                         <outlet property="blueAdjustTitle" destination="RHM-VY-MJM" id="WBA-zm-115"/>
                         <outlet property="gameMainTitle" destination="n09-Py-XeP" id="poj-el-pB4"/>
                         <outlet property="hintLabel" destination="Dk9-gE-K7r" id="Xx9-PU-7se"/>
@@ -220,6 +241,22 @@
                                             <action selector="restart:" destination="1Xg-iS-m9k" eventType="touchUpInside" id="HzL-p7-hnk"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVJ-wp-nYi">
+                                        <rect key="frame" x="243" y="223" width="83" height="38"/>
+                                        <color key="backgroundColor" red="0.69158773669999996" green="0.81474553999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="38" id="TUe-Qh-V3p"/>
+                                            <constraint firstAttribute="width" constant="83" id="u16-w1-n4I"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="13"/>
+                                        <state key="normal" title="Music On">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="musicBtnClick:" destination="1Xg-iS-m9k" eventType="touchUpInside" id="YRe-KJ-uTR"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -228,6 +265,8 @@
                                     <constraint firstAttribute="centerX" secondItem="x5L-tg-iRL" secondAttribute="centerX" constant="-0.5" id="9WR-J4-HXT"/>
                                     <constraint firstAttribute="centerX" secondItem="Vc2-ax-lfr" secondAttribute="centerX" constant="-0.5" id="EZj-mU-0Ie"/>
                                     <constraint firstItem="VIN-2S-83C" firstAttribute="top" secondItem="x5L-tg-iRL" secondAttribute="bottom" constant="-34" id="Fwa-0Z-cKi"/>
+                                    <constraint firstAttribute="centerX" secondItem="OVJ-wp-nYi" secondAttribute="centerX" constant="-0.5" id="J5b-rx-1Vo"/>
+                                    <constraint firstItem="OVJ-wp-nYi" firstAttribute="top" secondItem="Vc2-ax-lfr" secondAttribute="bottom" constant="8" id="Sfh-jl-tlS"/>
                                     <constraint firstAttribute="centerX" secondItem="VIN-2S-83C" secondAttribute="centerX" constant="-5" id="XZ0-uY-uSC"/>
                                     <constraint firstAttribute="centerX" secondItem="lcI-dj-Poe" secondAttribute="centerX" constant="4.5" id="clZ-lD-l6h"/>
                                     <constraint firstItem="Vc2-ax-lfr" firstAttribute="top" secondItem="x5L-tg-iRL" secondAttribute="bottom" constant="8" id="em0-hp-lkN"/>
@@ -279,6 +318,7 @@
                         <outlet property="blueAdjustButton" destination="VIN-2S-83C" id="Wn0-R6-AWn"/>
                         <outlet property="countdownView" destination="YDh-B4-DFy" id="SYw-H9-yo3"/>
                         <outlet property="hintLabel" destination="vlO-MJ-72c" id="6Bf-HP-Vws"/>
+                        <outlet property="musicControl" destination="OVJ-wp-nYi" id="b9V-hP-SGe"/>
                         <outlet property="pauseButton" destination="Ks8-Rq-nRm" id="ebi-kI-zdI"/>
                         <outlet property="pauseView" destination="BBB-eI-mEO" id="AGN-n5-Bw5"/>
                         <outlet property="restartButton" destination="KOs-2b-Zql" id="ytr-Mz-jqb"/>

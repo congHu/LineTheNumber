@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63E1C9311CA6BC52007E83A5 /* BGM.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 63E1C9301CA6BC52007E83A5 /* BGM.mp3 */; };
+		63E1C9341CA6C01C007E83A5 /* btnClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 63E1C9321CA6C01C007E83A5 /* btnClick.wav */; };
+		63E1C9351CA6C01C007E83A5 /* menuSelect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 63E1C9331CA6C01C007E83A5 /* menuSelect.wav */; };
 		63F0A8C71C50AE1E00586126 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0A8C61C50AE1E00586126 /* AppDelegate.swift */; };
 		63F0A8C91C50AE1E00586126 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0A8C81C50AE1E00586126 /* ViewController.swift */; };
 		63F0A8CC1C50AE1E00586126 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63F0A8CA1C50AE1E00586126 /* Main.storyboard */; };
@@ -27,6 +30,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		63E1C9301CA6BC52007E83A5 /* BGM.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BGM.mp3; sourceTree = "<group>"; };
+		63E1C9321CA6C01C007E83A5 /* btnClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = btnClick.wav; sourceTree = "<group>"; };
+		63E1C9331CA6C01C007E83A5 /* menuSelect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menuSelect.wav; sourceTree = "<group>"; };
 		63F0A8C11C50AE1E00586126 /* LineTheNumber.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineTheNumber.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F0A8C51C50AE1E00586126 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63F0A8C61C50AE1E00586126 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +91,9 @@
 				63F0A8CA1C50AE1E00586126 /* Main.storyboard */,
 				63F0A8CD1C50AE1E00586126 /* Images.xcassets */,
 				63F0A8CF1C50AE1E00586126 /* LaunchScreen.xib */,
+				63E1C9321CA6C01C007E83A5 /* btnClick.wav */,
+				63E1C9331CA6C01C007E83A5 /* menuSelect.wav */,
+				63E1C9301CA6BC52007E83A5 /* BGM.mp3 */,
 				63F0A8C41C50AE1E00586126 /* Supporting Files */,
 			);
 			path = LineTheNumber;
@@ -195,9 +204,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63E1C9311CA6BC52007E83A5 /* BGM.mp3 in Resources */,
+				63E1C9351CA6C01C007E83A5 /* menuSelect.wav in Resources */,
 				63F0A8CC1C50AE1E00586126 /* Main.storyboard in Resources */,
 				63F0A8D11C50AE1E00586126 /* LaunchScreen.xib in Resources */,
 				63F0A8CE1C50AE1E00586126 /* Images.xcassets in Resources */,
+				63E1C9341CA6C01C007E83A5 /* btnClick.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

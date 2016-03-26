@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MediaPlayer
+import AVFoundation
 class ViewController2: UIViewController {
     lazy var documentsPath: String = {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
@@ -28,7 +28,11 @@ class ViewController2: UIViewController {
     @IBOutlet var yelloAdjustButton: UIView!
     @IBOutlet var blueAdjustButton: UIView!
     @IBOutlet var resumeButton: UIButton!
-
+    @IBOutlet var musicControl: UIButton!
+    
+    var BGM:AVAudioPlayer!
+    var btnSFX:AVAudioPlayer!
+    var pauseSFX:AVAudioPlayer!
     
     var numOfX = 0
     var numOfY = 0
@@ -45,6 +49,7 @@ class ViewController2: UIViewController {
     var numAryAdd = 0
     var numOfCorrect = 0
     var numOfError = 0
+    var soundOn = true
     
     //维护参数
     var mntn = false
@@ -82,7 +87,7 @@ class ViewController2: UIViewController {
             }
         }
         
-        hintLabel.text = "Ready"
+        hintLabel.text = "准备"
         scoreBoard.text = ""
         NSTimer.scheduledTimerWithTimeInterval(0.001, target: self, selector: "gameCounter:", userInfo: nil, repeats: true)
         countdownView.alpha = 0
@@ -94,24 +99,37 @@ class ViewController2: UIViewController {
         pauseButton.alpha = 0
         blueAdjustButton.alpha = 0
         yelloAdjustButton.alpha = 0
-
+        
+        //显示教程
         let setting = "\(documentsPath)/setting.plist"
         var sd:NSDictionary = NSDictionary(contentsOfFile: setting)!
         if sd.objectForKey("showTutor") as! Bool{
             showTutor = true
         }
+        
+        
+        //音效
+        btnSFX = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("btnClick", ofType: "wav")!), error: nil)
+        pauseSFX = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuSelect", ofType: "wav")!), error: nil)
+        if !(sd.objectForKey("BGM") as! Bool){
+            btnSFX.volume = 0
+            pauseSFX.volume = 0
+            BGM.volume = 0
+            soundOn = false
+        }
+        
+        
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         for i in 0..<numOfY{
             for j in i..<numOfX{
-
-                
                 
                 UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: nil, animations: {
                         self.wall[i][j].alpha = 1
                         self.wall[j][i].alpha = 1
+                    
                     }, completion: nil)
                 UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: nil, animations: {
                         self.wall[i][j].backgroundColor = UIColor.blackColor()
@@ -165,7 +183,7 @@ class ViewController2: UIViewController {
             
             
             if numOfError == 2{
-                hintLabel.text = "Failed: 3/3"
+                hintLabel.text = "机会: 3/3"
                 scoreBoard.alpha = 0
                 UIView.animateWithDuration(0.5, animations: {
                     self.scoreBoard.textColor = UIColor(red: 176.0/255.0, green: 208.0/255.0, blue: 1, alpha: 1)
@@ -174,7 +192,7 @@ class ViewController2: UIViewController {
                     self.restartButton.alpha = 0.8
                     self.pauseButton.alpha = 0
                 })
-                scoreBoard.text = "Score: \(score)"
+                scoreBoard.text = "得分: \(score)"
                 
                 
             }else{
@@ -186,7 +204,7 @@ class ViewController2: UIViewController {
                     self.scoreBoard.alpha = 1
                     self.pauseButton.alpha = 0
                 })
-                scoreBoard.text = "Failed: \(numOfError)/3"
+                scoreBoard.text = "机会: \(numOfError)/3"
             }
         }
         if pauseBreaking == 0{
@@ -200,7 +218,7 @@ class ViewController2: UIViewController {
         numAryAdd = 0
         numOfCorrect = 0
         
-        hintLabel.text = "Ready"
+        hintLabel.text = "准备"
         if showTutor{
             hintLabel.text = "教程！"
             scoreBoard.text = "瞬时间内要记住数字！"
@@ -374,6 +392,7 @@ class ViewController2: UIViewController {
     }
     @IBAction func btnClick(sender: UIButton) {
         if gaming{
+            btnSFX.play()
             var indexClick = sender.tag
             println(indexClick)
             if detectRight(indexAry[numOfCorrect],a:indexClick) {
@@ -392,18 +411,28 @@ class ViewController2: UIViewController {
                 hintLabel.text = "\(numOfCorrect)/\(indexAry.count)"
                 
                 if numOfCorrect == indexAry.count{
+                    var i = Int(arc4random()%3)
+                    switch(i){
+                    case 0:
+                        hintLabel.text = "很好! ^_^"
+                    case 1:
+                        hintLabel.text = "不错!"
+                    case 2:
+                        hintLabel.text = "厉害!"
+                    default:
+                        break
+                    }
                     
-                    
-                    hintLabel.text = "Great! ^_^"
                     if levelTime >= 4000{
-                        hintLabel.text = "Fast!"
+                        hintLabel.text = "极速!"
                     }
                     if showTutor{
                         showTutor = false
-                        var sd = NSDictionary(dictionary: ["showTutor": false])
                         let setting = "\(documentsPath)/setting.plist"
+                        var sd:NSMutableDictionary = NSMutableDictionary(contentsOfFile: setting)!
+                        sd.setValue(showTutor, forKey: "showTutor")
                         sd.writeToFile(setting, atomically: true)
-                        hintLabel.text = "接受挑战吧骚年！"
+                        hintLabel.text = "接受挑战吧骚年!"
                     }
                     score++
                     scoreBoard.alpha = 0
@@ -412,7 +441,7 @@ class ViewController2: UIViewController {
                         self.scoreBoard.alpha = 1
                         self.pauseButton.alpha = 0
                     })
-                    scoreBoard.text = "Score: \(score)"
+                    scoreBoard.text = "得分: \(score)"
                     for i in 0..<indexAry.count{
                         UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: nil, animations: {
                             self.wall[self.indexAry[i]/10][self.indexAry[i]%10].backgroundColor = UIColor.blackColor()
@@ -440,9 +469,9 @@ class ViewController2: UIViewController {
                         mntnI++
                     }
                 }
-                hintLabel.text = "Failed :("
+                hintLabel.text = "错了!"
                 if numOfCorrect == indexAry.count-1{
-                    hintLabel.text = "Almost!"
+                    hintLabel.text = "差一点!"
                 }
                 
                 
@@ -461,7 +490,7 @@ class ViewController2: UIViewController {
                 
                 gaming = false
                 if numOfError == 2{
-                    hintLabel.text = "GameOver: 3/3"
+                    hintLabel.text = "完了: 3/3"
                     scoreBoard.alpha = 0
                     UIView.animateWithDuration(0.5, animations: {
                         self.scoreBoard.textColor = UIColor(red: 176.0/255.0, green: 208.0/255.0, blue: 1, alpha: 1)
@@ -469,7 +498,7 @@ class ViewController2: UIViewController {
                         self.restartButton.alpha = 0.8
                         self.pauseButton.alpha = 0
                     })
-                    scoreBoard.text = "Score: \(score)"
+                    scoreBoard.text = "得分: \(score)"
                     
                 }else{
                     pauseBreaking = 1000
@@ -480,7 +509,7 @@ class ViewController2: UIViewController {
                         self.scoreBoard.alpha = 1
                         self.pauseButton.alpha = 0
                     })
-                    scoreBoard.text = "Lose: \(numOfError)/3"
+                    scoreBoard.text = "机会: \(numOfError)/3"
                 }
 
             }
@@ -490,7 +519,7 @@ class ViewController2: UIViewController {
     
     func pauseBreak(){
         level++
-        hintLabel.text = "Ready"
+        hintLabel.text = "准备"
         if level%5 == 0 && level != 0{
             hintLabel.text = "Level Up!"
         }
@@ -528,6 +557,7 @@ class ViewController2: UIViewController {
     }
     
     @IBAction func restart(sender: UIButton) {
+        pauseSFX.play()
         if pauseView.alpha == 1{
             pauseView.alpha = 0
             pauseButton.alpha = 0
@@ -558,14 +588,15 @@ class ViewController2: UIViewController {
     }
     
     var tempLevelTime = -1
-    @IBAction func gamePause(sender: AnyObject) {    
+    @IBAction func gamePause(sender: AnyObject) {
+        pauseSFX.play()
         if gaming{
             NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "pauseAnimate:", userInfo: nil, repeats: true)
             gaming = false
             tempLevelTime = levelTime
             levelTime = -1
             pauseView.alpha = 1
-            hintLabel.text = "Now Pause"
+            hintLabel.text = "暂停"
 
             if mntn{
                 mntn = false
@@ -575,11 +606,12 @@ class ViewController2: UIViewController {
             gaming = true
             levelTime = tempLevelTime
             pauseView.alpha = 0
-            hintLabel.text = "Now go on"
+            hintLabel.text = "继续"
             
         }
     }
     func pauseAnimate(sender:NSTimer){
+        
         if gaming{
             sender.invalidate()
         }else{
@@ -606,6 +638,7 @@ class ViewController2: UIViewController {
         
     }
     @IBAction func resumeClick(sender: UIButton) {
+        pauseSFX.play()
         gaming = true
         UIView.animateWithDuration(0.1, delay: 0, options: .AllowUserInteraction, animations: {
             self.yelloAdjustButton.alpha = 0.3
@@ -629,8 +662,29 @@ class ViewController2: UIViewController {
             }, completion: nil)
         levelTime = tempLevelTime
         
-        hintLabel.text = "Now go on"
+        hintLabel.text = "继续"
     }
+    @IBAction func musicBtnClick(sender: UIButton) {
+        if soundOn{
+            sender.setTitle("Music Off", forState: UIControlState.Normal)
+            BGM.volume = 0
+            pauseSFX.volume = 0
+            btnSFX.volume = 0
+            soundOn = false
+        }else{
+            sender.setTitle("Music On", forState: UIControlState.Normal)
+            BGM.volume = 1
+            pauseSFX.volume = 1
+            pauseSFX.play()
+            btnSFX.volume = 1
+            soundOn = true
+        }
+        let setting = "\(documentsPath)/setting.plist"
+        var sd:NSMutableDictionary = NSMutableDictionary(contentsOfFile: setting)!
+        sd.setValue(soundOn, forKey: "BGM")
+        sd.writeToFile(setting, atomically: true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
