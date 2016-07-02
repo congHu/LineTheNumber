@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     lazy var documentsPath: String = {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        return paths.first! as! String
+        return paths.first! 
         }()
     
     override func prefersStatusBarHidden() -> Bool {
@@ -38,10 +38,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "animateTitle:", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(ViewController.animateTitle(_:)), userInfo: nil, repeats: true)
         
         let setting = "\(documentsPath)/setting.plist"
-        println(setting)
+        print(setting)
         if !NSFileManager.defaultManager().fileExistsAtPath(setting){
             var sd = NSMutableDictionary()
             sd.setValue(true, forKey: "showTutor")
@@ -56,8 +56,8 @@ class ViewController: UIViewController {
         BGMSwitcher.layer.cornerRadius = 19
         
         //音乐
-        audioPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BGM", ofType: "mp3")!), error: nil)
-        playSFX = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuSelect", ofType: "wav")!), error: nil)
+        audioPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BGM", ofType: "mp3")!), fileTypeHint: nil)
+        playSFX = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuSelect", ofType: "wav")!), fileTypeHint: nil)
         
         audioPlayer.numberOfLoops = -1
         if(BGMSwitcher.on){
@@ -78,13 +78,13 @@ class ViewController: UIViewController {
             self.blueAdjustTitle.alpha = 0.6
             self.yellowAdjustTitle.alpha = 0.6
             self.hintLabel.alpha = 0.5
-            UIView.animateWithDuration(0.1, delay: 0.1, options: nil, animations: {
+            UIView.animateWithDuration(0.1, delay: 0.1, options: [], animations: {
                 self.gameMainTitle.center.x -= 10
                 self.blueAdjustTitle.alpha = 0
                 self.yellowAdjustTitle.alpha = 0
                 self.hintLabel.alpha = 0
                 }, completion: nil)
-            UIView.animateWithDuration(0.1, delay: 0.2, options: nil, animations: {
+            UIView.animateWithDuration(0.1, delay: 0.2, options: [], animations: {
                 self.gameMainTitle.center.x += 5
                 self.hintLabel.alpha = 1
                 }, completion: nil)
@@ -97,13 +97,13 @@ class ViewController: UIViewController {
         self.blueAdjustTitle.alpha = 0.6
         self.yellowAdjustTitle.alpha = 0.6
         sender.backgroundColor = UIColor(red: 255, green: 218, blue: 106, alpha: 1)
-        UIView.animateWithDuration(0.1, delay: 0.1, options: nil, animations: {
+        UIView.animateWithDuration(0.1, delay: 0.1, options: [], animations: {
             self.gameMainTitle.center.x -= 10
             self.blueAdjustTitle.alpha = 0
             self.yellowAdjustTitle.alpha = 0
             sender.backgroundColor = UIColor(red: 86, green: 129, blue: 184, alpha: 1)
             }, completion: nil)
-        UIView.animateWithDuration(0.1, delay: 0.2, options: nil, animations: {
+        UIView.animateWithDuration(0.1, delay: 0.2, options: [], animations: {
             self.gameMainTitle.center.x += 5
             self.gameMainTitle.alpha = 0
             sender.alpha = 0
@@ -111,7 +111,7 @@ class ViewController: UIViewController {
             }, completion: nil)
         gaming = true
         countdownTime = 10
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "gameClock:", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.gameClock(_:)), userInfo: nil, repeats: false)
     }
     
     func gameClock(sender:NSTimer){

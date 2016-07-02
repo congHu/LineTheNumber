@@ -11,7 +11,7 @@ import AVFoundation
 class ViewController2: UIViewController {
     lazy var documentsPath: String = {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        return paths.first! as! String
+        return paths.first! 
         }()
 
     override func prefersStatusBarHidden() -> Bool {
@@ -81,7 +81,7 @@ class ViewController2: UIViewController {
                 wall[i][j].enabled = false
                 wall[i][j].setTitleColor(UIColor.whiteColor(), forState: UIControlState.Disabled)
                 wall[i][j].titleLabel?.font = UIFont(name: "Menlo", size: width/2.5)
-                wall[i][j].addTarget(self, action: "btnClick:", forControlEvents: UIControlEvents.TouchDown)
+                wall[i][j].addTarget(self, action: #selector(ViewController2.btnClick(_:)), forControlEvents: UIControlEvents.TouchDown)
                 wall[i][j].tag = i*10+j
                 view.addSubview(wall[i][j])
             }
@@ -89,7 +89,7 @@ class ViewController2: UIViewController {
         
         hintLabel.text = "准备"
         scoreBoard.text = ""
-        NSTimer.scheduledTimerWithTimeInterval(0.001, target: self, selector: "gameCounter:", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(0.001, target: self, selector: #selector(ViewController2.gameCounter(_:)), userInfo: nil, repeats: true)
         countdownView.alpha = 0
         restartButton.alpha = 0
         restartButton.layer.zPosition = 199
@@ -109,8 +109,8 @@ class ViewController2: UIViewController {
         
         
         //音效
-        btnSFX = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("btnClick", ofType: "wav")!), error: nil)
-        pauseSFX = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuSelect", ofType: "wav")!), error: nil)
+        btnSFX = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("btnClick", ofType: "wav")!), fileTypeHint: nil)
+        pauseSFX = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuSelect", ofType: "wav")!), fileTypeHint: nil)
         if !(sd.objectForKey("BGM") as! Bool){
             btnSFX.volume = 0
             pauseSFX.volume = 0
@@ -126,12 +126,12 @@ class ViewController2: UIViewController {
         for i in 0..<numOfY{
             for j in i..<numOfX{
                 
-                UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: nil, animations: {
+                UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: [], animations: {
                         self.wall[i][j].alpha = 1
                         self.wall[j][i].alpha = 1
                     
                     }, completion: nil)
-                UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: nil, animations: {
+                UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: [], animations: {
                         self.wall[i][j].backgroundColor = UIColor.blackColor()
                         self.wall[j][i].backgroundColor = UIColor.blackColor()
                     }, completion: nil)
@@ -170,7 +170,7 @@ class ViewController2: UIViewController {
                 for j in i..<numOfX{
                     wall[i][j].enabled = false
                     wall[j][i].enabled = false
-                    UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: nil, animations: {
+                    UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: [], animations: {
                         self.wall[i][j].backgroundColor = UIColor(red: 1, green: 80.0/255.0, blue: 70.0/255.0, alpha: 1)
                         self.wall[j][i].backgroundColor = UIColor(red: 1, green: 80.0/255.0, blue: 70.0/255.0, alpha: 1)
                         
@@ -317,8 +317,8 @@ class ViewController2: UIViewController {
             self.pauseButton.alpha = 1
         })
         gaming = true
-        println(indexAry)
-        println(numAry)
+        print(indexAry)
+        print(numAry)
     }
     func detectRight(i:Int,a:Int) ->Bool{
         /*
@@ -394,7 +394,7 @@ class ViewController2: UIViewController {
         if gaming{
             btnSFX.play()
             var indexClick = sender.tag
-            println(indexClick)
+            print(indexClick)
             if detectRight(indexAry[numOfCorrect],a:indexClick) {
                 wall[indexAry[numOfCorrect]/10][indexAry[numOfCorrect]%10].backgroundColor = UIColor(red: 176.0/255.0, green: 208.0/255.0, blue: 1, alpha: 1)
                 wall[indexAry[numOfCorrect]/10][indexAry[numOfCorrect]%10].enabled = false
@@ -443,7 +443,7 @@ class ViewController2: UIViewController {
                     })
                     scoreBoard.text = "得分: \(score)"
                     for i in 0..<indexAry.count{
-                        UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: nil, animations: {
+                        UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: [], animations: {
                             self.wall[self.indexAry[i]/10][self.indexAry[i]%10].backgroundColor = UIColor.blackColor()
                             
                         }, completion: nil)
@@ -479,7 +479,7 @@ class ViewController2: UIViewController {
                     for j in 0..<numOfX{
                         wall[i][j].enabled = false
                         wall[j][i].enabled = false
-                        UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: nil, animations: {
+                        UIView.animateWithDuration(0.05, delay: NSTimeInterval(Double(i)*0.1), options: [], animations: {
                             self.wall[i][j].backgroundColor = UIColor(red: 1, green: 80.0/255.0, blue: 70.0/255.0, alpha: 1)
                             self.wall[j][i].backgroundColor = UIColor(red: 1, green: 80.0/255.0, blue: 70.0/255.0, alpha: 1)
                             
@@ -531,7 +531,7 @@ class ViewController2: UIViewController {
                 wall[i][j].enabled = false
                 wall[j][i].enabled = false
                 
-                UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: nil, animations: {
+                UIView.animateWithDuration(0.05, delay: NSTimeInterval(0.5 + Double(i)*0.1), options: [], animations: {
                     self.wall[i][j].setTitle("", forState: UIControlState.Disabled)
                     self.wall[i][j].setTitleColor(UIColor.whiteColor(), forState: UIControlState.Disabled)
                     self.wall[j][i].setTitle("", forState: UIControlState.Disabled)
@@ -562,11 +562,11 @@ class ViewController2: UIViewController {
             pauseView.alpha = 0
             pauseButton.alpha = 0
         }else{
-            UIView.animateWithDuration(0.1, delay: 0, options: nil, animations: {
+            UIView.animateWithDuration(0.1, delay: 0, options: [], animations: {
                 sender.backgroundColor = UIColor.whiteColor()
             }, completion: nil)
             
-            UIView.animateWithDuration(0.2, delay: 0.1, options: nil, animations: {
+            UIView.animateWithDuration(0.2, delay: 0.1, options: [], animations: {
                 sender.backgroundColor = UIColor(red: 1, green: 120.0/255.0, blue: 120.0/255.0, alpha: 0.8)
                 sender.alpha = 0
             }, completion: nil)
@@ -591,7 +591,7 @@ class ViewController2: UIViewController {
     @IBAction func gamePause(sender: AnyObject) {
         pauseSFX.play()
         if gaming{
-            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "pauseAnimate:", userInfo: nil, repeats: true)
+            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(ViewController2.pauseAnimate(_:)), userInfo: nil, repeats: true)
             gaming = false
             tempLevelTime = levelTime
             levelTime = -1
@@ -673,7 +673,7 @@ class ViewController2: UIViewController {
             soundOn = false
         }else{
             sender.setTitle("Music On", forState: UIControlState.Normal)
-            BGM.volume = 1
+            BGM.volume = 0.4
             pauseSFX.volume = 1
             pauseSFX.play()
             btnSFX.volume = 1
